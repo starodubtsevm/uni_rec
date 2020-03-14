@@ -21,7 +21,18 @@ class receiver(object):
                 data = self.q.get_nowait()
             except queue.Empty:
                 break
-            self.procesing(data)
+
+        data_left  =  data[:,0]
+        data_right =  data[:,1]
+
+        if self.A_l == 1:
+            data = data_left
+        elif self.A_r == 1:
+            data = data_right
+        else:
+            print ("Error. Please select channel", file=sys.stderr)
+        self.check_channel()
+        self.procesing(data)
 
     def __init__(self):
         """Инициализация класса"""
@@ -34,29 +45,34 @@ class receiver(object):
         self.downsample = 2
         self.channels = [1,2]
         self.mapping = [c - 1 for c in self.channels]
-        self.channel = "both"
+        self.channel = "left"
+        self.A_l = 1
+        self.A_r = 0
         self.start_idx = 0
         self.fs = fs
-        if self.channel == "left" or self.channel == "both":
+        
+    def check_channel(self):
+        '''Проверка установленного канала '''
+        if self.channel == "left":
             self.A_l = 1
+            self.A_r = 0
         else:
             self.A_l = 0
-        if self.channel == "right" or self.channel == "both":
             self.A_r = 1
+
+        if self.channel == "right":
+            self.A_r = 1
+            self.A_l = 0
         else:
             self.A_r = 0
+            self.A_l = 1
 
     def procesing(self, data):
-        """Обработка сигнала"""
+        """Обработка сигнала. Вычисление rms"""
 
-        data_left  =  data[:,0]
-        data_right =  data[:,1]
-
-        rms_left  = np.sqrt(np.mean(np.square(data_left)))
-        rms_right = np.sqrt(np.mean(np.square(data_right)))
-        data_mean_left = np.mean(rms_left)
-        data_mean_right = np.mean(rms_right)
-        print (data_mean_left, len(data_left), data_mean_right, len(data_right))
+        rms = np.sqrt(np.mean(np.square(data)))
+        data_mean = np.mean(rms)
+        print (data_mean, len(data),self.A_l,self.A_r)
 
         return
 
