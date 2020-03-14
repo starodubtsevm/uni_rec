@@ -31,7 +31,7 @@ class receiver(object):
             data = data_right
         else:
             print ("Error. Please select channel", file=sys.stderr)
-        self.check_channel()
+        self._check_channel()
         self.procesing(data)
 
     def __init__(self):
@@ -51,7 +51,7 @@ class receiver(object):
         self.start_idx = 0
         self.fs = fs
         
-    def check_channel(self):
+    def _check_channel(self):
         '''Проверка установленного канала '''
         if self.channel == "left":
             self.A_l = 1

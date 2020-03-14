@@ -5,7 +5,7 @@ from receiver import*
 class krl(receiver):
     "Класс приемника сигнала КРЛ"
 
-        def __init__(self):
+    def __init__(self):
         """Инициализация класса"""
         super(krl,self).__init__()
         self.frequency = 475
@@ -13,8 +13,6 @@ class krl(receiver):
 
     def procesing(self, data):
         """Обработка сигнала. Вычисление rms"""
-
-
 
         rms  = np.sqrt(np.mean(np.square(data)))
         data_mean = np.mean(rms)
