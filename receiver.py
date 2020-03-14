@@ -21,12 +21,7 @@ class receiver(object):
                 data = self.q.get_nowait()
             except queue.Empty:
                 break
-
-            shift = len(data)
-            print (shift)
-
-#            if self.calc(data) == 0:
-#                 raise SystemExit
+            self.procesing(data)
 
     def __init__(self):
         """Инициализация класса"""
@@ -50,4 +45,18 @@ class receiver(object):
             self.A_r = 1
         else:
             self.A_r = 0
+
+    def procesing(self, data):
+        """Обработка сигнала"""
+
+        data_left  =  data[:,0]
+        data_right =  data[:,1]
+
+        rms_left  = np.sqrt(np.mean(np.square(data_left)))
+        rms_right = np.sqrt(np.mean(np.square(data_right)))
+        data_mean_left = np.mean(rms_left)
+        data_mean_right = np.mean(rms_right)
+        print (data_mean_left, len(data_left), data_mean_right, len(data_right))
+
+        return
 
