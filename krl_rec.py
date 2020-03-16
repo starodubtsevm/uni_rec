@@ -25,9 +25,6 @@ class krl(receiver):
     def procesing(self, data):
         """Обработка сигнала. Вычисление rms"""
 
-        #rms = np.sqrt(np.mean(np.square(data)))
-        #data_mean = np.mean(rms)
-        #print (data_mean, len(data))
         for i in range(len(data)):
             print (data[i])
             #temp1 = chan_fir.proc(sample)        # filtered signal
