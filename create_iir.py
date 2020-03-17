@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.signal as signal
-
+import matplotlib.pyplot as plt
 
 def createCoeffs(order,cutoff,filterType,design='butter',rp=1,rs=1,fs=0):
 
@@ -36,4 +36,14 @@ def createCoeffs(order,cutoff,filterType,design='butter',rp=1,rs=1,fs=0):
     elif design == 'cheby2' and isThereAnError == 0:
         COEFFS = signal.cheby2(order,rs,cutoff,filterType,output='sos')
     return COEFFS
+
+fs = 100
+sos = createCoeffs(4,[15], "lowpass",design="butter",rp=1,rs=1,fs=fs)
+w, h = signal.sosfreqz(sos, worN=1500)
+
+db = 20*np.log10((np.abs(h)))
+plt.plot(fs/2*w/np.pi, db)
+plt.ylim(-40, 5)
+plt.xlim(0,100)
+plt.show()
 
